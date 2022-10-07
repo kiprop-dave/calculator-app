@@ -1,23 +1,43 @@
-import logo from './logo.svg';
 import './App.css';
+import Display from './display';
+import Keypad from './keypad';
+import {useState} from 'react';
 
 function App() {
+  const [query, setQuery] = useState('');
+  const [result, setResult] = useState('')
+  function handleClick(event){
+    const {value} = event.target
+    setQuery(prevState =>{
+      return `${prevState+value}`
+    })
+  }
+
+  function handleClear(){
+    setQuery("")
+    setResult('')
+  }
+
+  function handleEquals(){
+    // eslint-disable-next-line 
+    const myResult = eval(query)
+    setResult(myResult)
+    console.log(result)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className='calculator'>
+        <Display 
+          query = {query}
+          result = {result}
+        />
+        <Keypad
+          click = {handleClick}
+          clear ={handleClear}
+          equals= {handleEquals}
+        />
+      </div>
     </div>
   );
 }
